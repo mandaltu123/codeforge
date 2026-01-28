@@ -1,0 +1,16 @@
+services:
+  codeforge-api:
+    build: .
+    container_name: codeforge-api
+    # Run as root so the container can access the Docker socket for sandboxing
+    user: "0:0"
+    ports:
+      - "8000:8000"
+    volumes:
+      # Allow API container to control Docker
+      - ${DOCKER_SOCK:-/var/run/docker.sock}:/var/run/docker.sock
+      # Share a host temp dir so nested Docker can mount files
+      - /tmp/llmexec:/tmp/llmexec
+    environment:
+      - ENV=production
+    restart: unless-stopped
