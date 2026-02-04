@@ -4,7 +4,7 @@ from models import (
     ExecuteRequest, ExecuteResponse,
     SolveRequest, SolveResponse
 )
-from llm import generate_python
+from llm import generate_python, LLMError
 from validator import validate_python_code, ValidationError
 from sandbox import run_in_docker, parse_stdout_json, SandboxError
 
@@ -22,7 +22,10 @@ def health():
 
 @app.post("/v1/codegen", response_model=CodegenResponse)
 def codegen(req: CodegenRequest):
-    code = generate_python(req.task, req.output_schema)
+    try:
+        code = generate_python(req.task, req.output_schema)
+    except LLMError as e:
+        raise HTTPException(status_code=503, detail={"type": "LLM_ERROR", "message": str(e)})
 
     try:
         validate_python_code(code)
@@ -69,7 +72,14 @@ def execute(req: ExecuteRequest):
 @app.post("/v1/solve", response_model=SolveResponse)
 def solve(req: SolveRequest):
     # 1) codegen
-    code = generate_python(req.task, req.output_schema)
+    try:
+        code = generate_python(req.task, req.output_schema)
+    except LLMError as e:
+        return SolveResponse(
+            status="error",
+            code="",
+            error={"type": "LLM_ERROR", "message": str(e)}
+        )
 
     try:
         validate_python_code(code)
