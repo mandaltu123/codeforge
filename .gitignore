@@ -21,3 +21,4 @@ venv/
 
 # Docker local
 docker-compose.override.yml
+.ipynb_checkpoints/
