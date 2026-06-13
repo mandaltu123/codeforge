@@ -1,5 +1,11 @@
 # CodeForge
 
+![Python](https://img.shields.io/badge/Python-3.11+-blue?logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-green?logo=fastapi&logoColor=white)
+![Ollama](https://img.shields.io/badge/Ollama-LLaMA_3.1-black)
+![Docker](https://img.shields.io/badge/Docker-Sandbox-blue?logo=docker&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-yellow)
+
 **LLM → Code → Sandbox Execute pipeline.** Give it a task in plain English; it generates Python, validates the syntax, runs it in an isolated Docker container, and returns structured JSON output.
 
 ## What It Does
@@ -100,3 +106,7 @@ codeforge/
 ├── requirements.txt
 └── docker-compose.yml
 ```
+
+## License
+
+MIT — see [LICENSE](LICENSE)
